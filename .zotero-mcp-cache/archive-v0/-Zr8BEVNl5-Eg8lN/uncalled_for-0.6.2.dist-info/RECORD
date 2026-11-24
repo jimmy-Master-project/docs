@@ -1,0 +1,16 @@
+uncalled_for/__init__.py,sha256=pyJ7FIvsHF40L9Yp35Pyli48TpeTE3eU3d6sFRmJ9ds,1215
+uncalled_for/annotations.py,sha256=qQ02hXCSs6pkpiQdzMvwg7N4scyPDyfjNRxTK_y6bG0,3530
+uncalled_for/base.py,sha256=s6mcoCU2QvzqQkIG2xcmQ2pmT8-8o6apHHEnrZUAGik,3391
+uncalled_for/caching.py,sha256=sVCcFyy6MBk24FgxjdW0CwErSxASESjKDA3xyZXsFTs,2761
+uncalled_for/frames.py,sha256=wmbXgYrqXbSVw-PO2lqFk9PjhCqZz9R3Rt28IMnthJQ,6764
+uncalled_for/functional.py,sha256=8JJljQcLBWt5cD8X1Quao6Zf0_CjfxMSQnDH_oOHv3M,7173
+uncalled_for/introspection.py,sha256=w5o6N3mORYN8PItNwdrX641J4OFF_2ekdvPHuTqKST0,2695
+uncalled_for/py.typed,sha256=47DEQpj8HBSa-_TImW-5JCeuQeRkm5NMpJWZG3hSuFU,0
+uncalled_for/references.py,sha256=t_wExIuyAl7BRzJlNd5FRP388vO4lORVn0WGcW1PGco,4977
+uncalled_for/resolution.py,sha256=FYi56z2riRkWWudSntyEyegF8h76zRjH4zUVM4BzsHo,5053
+uncalled_for/shared.py,sha256=SE-F6S5qCyftQNm4cDNDYQ0bMscYZZSSNG3B5h9MPmo,4747
+uncalled_for/validation.py,sha256=usCpz6PhrlxJejHGNy-UVAthyhFPzLZHrnrFPsiaBsQ,3139
+uncalled_for-0.6.2.dist-info/METADATA,sha256=dDncwB5QwjkfNEKTzuxkMkRlvIg3dNrt_8QxDt1CwMY,4337
+uncalled_for-0.6.2.dist-info/WHEEL,sha256=2iZrJkDIkeDh0k9SikKMqFuRP-ua6mb4Ir1AsER4BEw,87
+uncalled_for-0.6.2.dist-info/licenses/LICENSE,sha256=YuVWU_ZXO0K_k2FG8xWKe5RGxV24AhJKTvQmKfqXuyk,1087
+uncalled_for-0.6.2.dist-info/RECORD,,

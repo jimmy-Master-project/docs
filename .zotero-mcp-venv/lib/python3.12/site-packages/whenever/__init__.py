@@ -1,0 +1,234 @@
+# Almost everything is lazily imported, to speed up initial import time.
+def __getattr__(name: str) -> object:
+    # When any name from a group is first accessed, the whole module is loaded
+    # and all names from it are pre-populated, so subsequent accesses skip __getattr__.
+    if src := _LAZY_NAMES.get(name):
+        mod = __import__(src, fromlist=("",))
+        g = globals()
+        for n in _LAZY_MODULES[src]:
+            g[n] = getattr(mod, n)
+        return g[name]
+    # TZPATH is a live view, not a cached value.
+    elif name == "TZPATH":
+        from ._common import warn_deprecated
+        from ._core import get_tzpath
+
+        warn_deprecated(
+            "TZPATH is deprecated; use get_tzpath() instead",
+            stacklevel=2,
+        )
+        return get_tzpath()
+    # Not cached, so that every access warns.
+    elif name == "DisambiguateStr":
+        from ._common import warn_deprecated
+        from ._typing import DisambiguateStr
+
+        warn_deprecated(
+            "DisambiguateStr is deprecated; use DisambiguationStr instead",
+            stacklevel=2,
+        )
+        return DisambiguateStr
+    elif name == "CalendarUnitCompositionWarning":
+        from ._common import warn_deprecated
+        from ._ideltas import MonthCompositionWarning
+
+        warn_deprecated(
+            "CalendarUnitCompositionWarning is deprecated; "
+            "use MonthCompositionWarning instead",
+            stacklevel=2,
+        )
+        return MonthCompositionWarning
+    elif name == "AnyDelta":
+        from ._core import TimeDelta
+        from ._ideltas import ItemizedDateDelta, ItemizedDelta
+
+        globals()["AnyDelta"] = val = (
+            TimeDelta | ItemizedDelta | ItemizedDateDelta
+        )
+        return val
+    elif name == "__version__":
+        globals()["__version__"] = version = __import__(
+            "importlib.metadata"
+        ).metadata.version(__name__)
+        return version
+
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+
+
+# Ensures not-yet-imported names are still included in dir() output
+def __dir__() -> list[str]:
+    return sorted(
+        (globals().keys() | _LAZY_NAMES.keys() | {"AnyDelta", "__version__"})
+        - {"_LAZY_MODULES", "_LAZY_NAMES"}
+    )
+
+
+# This could be derived from the imports below, but it's easier for static
+# analysis and IDEs if it's statically defined.
+__all__ = (
+    # Date and time
+    "Date",
+    "YearMonth",
+    "MonthDay",
+    "IsoWeekDate",
+    "Time",
+    "Instant",
+    "OffsetDateTime",
+    "ZonedDateTime",
+    "PlainDateTime",
+    # Deltas and time units
+    "TimeDelta",
+    "ItemizedDelta",
+    "ItemizedDateDelta",
+    "hours",
+    "minutes",
+    "seconds",
+    "milliseconds",
+    "microseconds",
+    "nanoseconds",
+    # Exceptions/warnings
+    "DaysAssumed24HoursWarning",
+    "StaleOffsetWarning",
+    "NaiveArithmeticWarning",
+    "MonthCompositionWarning",
+    "WheneverWarning",
+    "PotentialDstBugWarning",
+    "PickleOffsetMismatchWarning",
+    "WheneverDeprecationWarning",
+    "ImplicitDisambiguationWarning",
+    "SkippedTime",
+    "RepeatedTime",
+    "InvalidOffsetError",
+    "TimeZoneNotFoundError",
+    # Enums/constants
+    "Weekday",
+    "MONDAY",
+    "TUESDAY",
+    "WEDNESDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
+    "SUNDAY",
+    "SYSTEM_TZ",
+    # Other
+    "reset_system_tz",
+    "patch_current_time",
+    "TimePatch",
+    "get_tzpath",
+    "reset_tzpath",
+    "clear_tzcache",
+    "available_timezones",
+    "AnyDelta",
+    "RoundModeStr",
+    "DisambiguationStr",
+    "DeltaUnitStr",
+    "DeltaTotalUnitStr",
+    "DateDeltaUnitStr",
+    "ExactDeltaUnitStr",
+    "OffsetMismatchStr",
+    "TimestampUnitStr",
+)
+
+
+_LAZY_MODULES = {
+    f"{__package__}._core": (
+        # Classes
+        "Date",
+        "Time",
+        "Instant",
+        "OffsetDateTime",
+        "ZonedDateTime",
+        "PlainDateTime",
+        "TimeDelta",
+        # Unit constructors
+        "hours",
+        "minutes",
+        "seconds",
+        "milliseconds",
+        "microseconds",
+        "nanoseconds",
+        # Exceptions/warnings
+        "DaysAssumed24HoursWarning",
+        "StaleOffsetWarning",
+        "NaiveArithmeticWarning",
+        "WheneverWarning",
+        "PotentialDstBugWarning",
+        "PickleOffsetMismatchWarning",
+        "WheneverDeprecationWarning",
+        "ImplicitDisambiguationWarning",
+        "SkippedTime",
+        "RepeatedTime",
+        "InvalidOffsetError",
+        "TimeZoneNotFoundError",
+        # Other
+        "reset_system_tz",
+        "_EXTENSION_LOADED",
+        # Unpickle functions
+        "_unpkl_date",
+        "_unpkl_inst",
+        "_unpkl_local",
+        "_unpkl_offset",
+        "_unpkl_tdelta",
+        "_unpkl_time",
+        "_unpkl_utc",
+        "_unpkl_zoned",
+    ),
+    f"{__package__}._ideltas": (
+        "MonthCompositionWarning",
+        "ItemizedDelta",
+        "ItemizedDateDelta",
+        "_unpkl_iddelta",
+        "_unpkl_idelta",
+    ),
+    f"{__package__}._utils": (
+        "TimePatch",
+        "patch_current_time",
+        "get_tzpath",
+        "reset_tzpath",
+        "clear_tzcache",
+        "available_timezones",
+    ),
+    f"{__package__}._typing": (
+        "RoundModeStr",
+        "DeltaUnitStr",
+        "DeltaTotalUnitStr",
+        "DateDeltaUnitStr",
+        "ExactDeltaUnitStr",
+        "DisambiguationStr",
+        "OffsetMismatchStr",
+        "TimestampUnitStr",
+    ),
+    f"{__package__}._common": ("SYSTEM_TZ",),
+    f"{__package__}._shared": (
+        "YearMonth",
+        "MonthDay",
+        "Weekday",
+        "IsoWeekDate",
+        "_unpkl_iwd",
+        "_unpkl_md",
+        "_unpkl_ym",
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY",
+    ),
+}
+_LAZY_NAMES = {n: mod for mod, names in _LAZY_MODULES.items() for n in names}
+
+
+# Without this, IDEs won't show proper information for our types.
+# Note we don't actually import the variable from `typing`,
+# as this has a runtime cost.
+TYPE_CHECKING = False
+
+if TYPE_CHECKING:
+    from ._core import *
+    from ._ideltas import *
+    from ._shared import *
+    from ._typing import *
+    from ._utils import *
+
+del TYPE_CHECKING

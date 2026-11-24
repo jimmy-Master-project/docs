@@ -1,0 +1,594 @@
+from __future__ import annotations
+
+import sys
+from datetime import (
+    date as _date,
+    datetime as _datetime,
+    time as _time,
+    timedelta as _timedelta,
+    timezone as _timezone,
+)
+from typing import TYPE_CHECKING, Literal, NamedTuple, NoReturn, cast
+
+from ._common import (
+    DUMMY_LEAP_YEAR,
+    UTC,
+    Nanos,
+    check_utc_bounds,
+    format_offset_secs,
+    mk_fixed_tzinfo,
+    round_offset_to_minute,
+    tzid_display,
+)
+from ._format import parse_digits
+
+if TYPE_CHECKING:
+    from ._tz import SafeTzId, TimeZone
+
+
+class InvalidOffsetError(ValueError):
+    """The offset in the input matches no offset the time zone applies to
+    the written local time. Raised by the ISO and pattern parsers, the
+    ``datetime`` constructor overload, and ``assume_tz()`` under
+    ``offset_mismatch="raise"``.
+    """
+
+    @classmethod
+    def _for_tz(cls, offset_secs: int, tzid: str | None) -> InvalidOffsetError:
+        return cls(
+            f"offset {format_offset_secs(offset_secs, basic=False)} does not match "
+            f"{tzid_display(tzid)}"
+        )
+
+
+def _parse_err(s: str) -> NoReturn:
+    raise ValueError(f"invalid ISO 8601 string: {s!r}") from None
+
+
+def _rfc2822_err(s: str) -> NoReturn:
+    raise ValueError(f"invalid RFC 2822 string: {s!r}") from None
+
+
+def _parse_nanos(s: str) -> Nanos:
+    if len(s) > 9 or not s.isdigit() or not s.isascii():
+        raise ValueError("Invalid decimals")
+    return int(s.ljust(9, "0"))
+
+
+def _strict_int(s: str) -> int:
+    # Callers validate the full input is ASCII once.
+    if not s.isdigit():
+        raise ValueError(f"invalid digits: {s!r}")
+    return int(s)
+
+
+def _split_nextchar(
+    s: str, chars: str, start: int = 0, end: int = -1
+) -> tuple[str, str | None, str]:
+    for c in chars:
+        if (idx := s.find(c, start, end)) != -1:
+            return (s[:idx], c, s[idx + 1 :])
+    return (s, None, "")
+
+
+_is_sep = " Tt".__contains__
+
+
+def _split_iso_date_time(s: str) -> tuple[str, _date]:
+    if s[4] == "-" and s[7] == "-" and _is_sep(s[10]):
+        return s[11:], _date_from_iso_ascii(s[:10])
+    if _is_sep(s[8]):
+        return s[9:], _date_from_iso_ascii(s[:8])
+    raise ValueError()
+
+
+def _offset_from_iso(s: str) -> int:
+    minutes = 0
+    seconds = 0
+    if len(s) == 5 and s[2] == ":" and s[3] < "6":  # most common: HH:MM
+        hours = _strict_int(s[:2])
+        minutes = _strict_int(s[3:])
+    elif len(s) == 4 and s[2] < "6":  # HHMM
+        hours = _strict_int(s[:2])
+        minutes = _strict_int(s[2:])
+    elif len(s) == 2:  # HH
+        hours = _strict_int(s)
+    elif (
+        len(s) == 8
+        and s[2] == ":"
+        and s[5] == ":"
+        and s[3] < "6"
+        and s[6] < "6"
+    ):  # HH:MM:SS
+        hours = _strict_int(s[:2])
+        minutes = _strict_int(s[3:5])
+        seconds = _strict_int(s[6:])
+    elif len(s) == 6 and s[2] < "6" and s[4] < "6":  # HHMMSS
+        hours = _strict_int(s[:2])
+        minutes = _strict_int(s[2:4])
+        seconds = _strict_int(s[4:])
+    else:
+        raise ValueError("Invalid offset format")
+    return hours * 3600 + minutes * 60 + seconds
+
+
+def datetime_from_iso(s: str) -> tuple[_datetime, Nanos]:
+    if len(s) < 11 or "W" in s or not s.isascii():
+        _parse_err(s)
+
+    # OPTIMIZE: the happy path can be faster
+    try:
+        rest, date = _split_iso_date_time(s)
+        time, nanos = time_from_iso(rest)
+    except ValueError:
+        _parse_err(s)
+
+    return _datetime.combine(date, time), nanos
+
+
+def offset_dt_from_iso(s: str) -> tuple[_datetime, Nanos]:
+    if len(s) < 11 or "W" in s[:11] or not s.isascii():
+        _parse_err(s)
+
+    try:
+        rest, date = _split_iso_date_time(s)
+        time, nanos, offset, _, _ = _time_offset_tz_from_iso(rest)
+        if offset is None:
+            raise ValueError("Missing offset")
+        elif offset == "Z":
+            tzinfo = UTC
+        else:
+            assert isinstance(offset, _timezone)
+            tzinfo = offset
+    except ValueError:
+        _parse_err(s)
+
+    return check_utc_bounds(_datetime.combine(date, time, tzinfo)), nanos
+
+
+def instant_at_offset(
+    local: _datetime,
+    tz: TimeZone,
+    offset_secs: int,
+    /,
+) -> _datetime:
+    """Read ``local`` at ``offset_secs``, then re-express the resulting exact
+    time with the offset ``tz`` actually applies to it."""
+    return tz.convert(
+        check_utc_bounds(local.replace(tzinfo=mk_fixed_tzinfo(offset_secs)))
+    )
+
+
+def matching_local_offset(
+    local: _datetime,
+    tz: TimeZone,
+    parsed_offset: int,
+    exact: bool,
+    gap_extrapolates: bool,
+    /,
+) -> _datetime | None:
+    from ._tz import Fold, Gap, Unique
+
+    candidate_offsets: tuple[int, ...]
+    match tz.ambiguity_for_local(local):
+        case Unique(offset):
+            candidate_offsets = (offset,)
+        case Fold(_, earlier_offset, later_offset):
+            # An exact match wins over the earlier offset matching after
+            # rounding.
+            if later_offset == parsed_offset:
+                candidate_offsets = (later_offset,)
+            else:
+                candidate_offsets = (earlier_offset, later_offset)
+        case Gap(_, later_offset, earlier_offset):  # pragma: no branch
+            # A skipped local time has no occurrence, so no offset identifies
+            # one. A stdlib datetime in a gap does name an exact time, though:
+            # PEP 495 extrapolates from the offset on either side of it.
+            if gap_extrapolates and parsed_offset in (
+                earlier_offset,
+                later_offset,
+            ):
+                return instant_at_offset(local, tz, parsed_offset)
+            return None
+
+    for offset in candidate_offsets:
+        comparable = offset if exact else round_offset_to_minute(offset)
+        if comparable == parsed_offset:
+            return check_utc_bounds(
+                local.replace(tzinfo=mk_fixed_tzinfo(offset))
+            )
+    return None
+
+
+class ZonedInput(NamedTuple):
+    """A local time in a named time zone, with the offset it was written with:
+    the input to the resolution flow, from an ISO string, a pattern, or a
+    stdlib datetime.
+    """
+
+    local: _datetime
+    nanos: Nanos
+    tz: TimeZone
+    offset: _timezone | Literal["Z"] | None
+    offset_exact: bool
+
+
+def zdt_parts_from_iso(s: str, /) -> ZonedInput:
+    from ._tz import TimeZoneNotFoundError, get_tz
+
+    if len(s) < 11 or "W" in s[:11] or not s.isascii():
+        _parse_err(s)
+
+    try:
+        rest, date = _split_iso_date_time(s)
+        time, nanos, offset, offset_exact, tzid = _time_offset_tz_from_iso(
+            rest
+        )
+    except TimeZoneNotFoundError:
+        # A string that names no time zone raises the same exception
+        # wherever it is given; only the text around it is a format error.
+        raise
+    except ValueError:
+        _parse_err(s)
+
+    if tzid is None:
+        _parse_err(s)
+
+    return ZonedInput(
+        _datetime.combine(date, time),
+        nanos,
+        get_tz(tzid),
+        offset,
+        offset_exact,
+    )
+
+
+def time_from_iso(s_orig: str) -> tuple[_time, Nanos]:
+    s, sep, nanos_raw = _split_nextchar(s_orig, ".,", 6, 9)
+
+    try:
+        return (
+            _time_from_iso_nofrac(s),
+            _parse_nanos(nanos_raw) if sep else 0,
+        )
+    except ValueError:
+        _parse_err(s_orig)
+
+
+# Parse the time, UTC offset, and time zone ID
+def _time_offset_tz_from_iso(
+    s: str,
+) -> tuple[
+    _time,
+    Nanos,
+    _timezone | Literal["Z"] | None,
+    bool,
+    SafeTzId | None,
+]:
+    # split off the bracketed time zone ID (if present). The first bracket
+    # opens it and the only closing bracket ends the string.
+    # NOTE: sorry for the unicode escape sequences. Literal brackets
+    # break my LSP's indentation detection. \x5b is open bracket '['
+    tz_raw: str | None = None
+    if (bracket := s.find("\x5b")) != -1:
+        s, tz_raw = s[:bracket], s[bracket + 1 :]
+        if tz_raw[-1:] != "]" or "]" in tz_raw[:-1]:
+            raise ValueError("invalid time zone ID brackets")
+        tz_raw = tz_raw[:-1]
+
+    # determine the offset
+    offset: Literal["Z"] | _timezone | None
+    if s.endswith(("Z", "z")):
+        s_time = s[:-1]
+        offset = "Z"
+        offset_exact = True
+    else:
+        s_time, sign, s_offset = _split_nextchar(s, "+-")
+        if sign is None:
+            offset = None
+            offset_exact = False
+        else:
+            offset_secs = _offset_from_iso(s_offset)
+            if sign == "-":
+                offset_secs = -offset_secs
+            offset = mk_fixed_tzinfo(offset_secs)
+            offset_exact = len(s_offset) in (6, 8)
+
+    time, nanos = time_from_iso(s_time)
+    if tz_raw is None:
+        return (time, nanos, offset, offset_exact, None)
+
+    from ._tz import validate_tzid
+
+    return (time, nanos, offset, offset_exact, validate_tzid(tz_raw))
+
+
+def yearmonth_from_iso(s: str) -> _date:
+    if not s.isascii():
+        _parse_err(s)
+    try:
+        if len(s) == 7 and s[4] == "-":
+            year, month = _strict_int(s[:4]), _strict_int(s[5:])
+        elif len(s) == 6:
+            year, month = _strict_int(s[:4]), _strict_int(s[4:])
+        else:
+            _parse_err(s)
+        return _date(year, month, 1)
+    except ValueError:
+        _parse_err(s)
+
+
+def monthday_from_iso(s: str) -> _date:
+    if not (s.startswith("--") and s.isascii()):
+        _parse_err(s)
+    try:
+        if len(s) == 7 and s[4] == "-":
+            month, day = _strict_int(s[2:4]), _strict_int(s[5:])
+        elif len(s) == 6:
+            month, day = _strict_int(s[2:4]), _strict_int(s[4:])
+        else:
+            _parse_err(s)
+        return _date(DUMMY_LEAP_YEAR, month, day)
+    except ValueError:
+        _parse_err(s)
+
+
+if sys.version_info >= (3, 11):
+    _date_from_iso_basic = _date.fromisoformat
+
+else:  # pragma: no cover
+
+    def _date_from_iso_basic(s: str) -> _date:
+        return _date.fromisoformat(s[:4] + "-" + s[4:6] + "-" + s[6:])
+
+
+def _date_from_iso_ascii(s: str) -> _date:
+    if not s.replace("-", "").isdigit():
+        raise ValueError()
+    if len(s) == 8:
+        return _date_from_iso_basic(s)
+    if len(s) == 10 and s[4] == "-" and s[7] == "-":
+        return _date.fromisoformat(s)
+    raise ValueError()
+
+
+def date_from_iso(s: str) -> _date:
+    if not s.isascii():
+        _parse_err(s)
+    try:
+        return _date_from_iso_ascii(s)
+    except ValueError:
+        _parse_err(s)
+
+
+# The ISO parsing functions were improved in Python 3.11,
+# so we use them if available.
+if sys.version_info >= (3, 11):
+
+    def _time_from_iso_nofrac(s: str) -> _time:
+        # Compensate for a bug in CPython where times like "12:34:56:78" are
+        # accepted as valid times. This is only fixed in Python 3.14+
+        if s.count(":") > 2:
+            raise ValueError()
+        if all(map("0123456789:".__contains__, s)):
+            if s.startswith("24"):
+                raise ValueError()
+            # Reject separator-less fractions like "20200101", which CPython
+            # reads as HHMMSSff (20:20:01.01) but our grammar forbids
+            if ":" not in s and len(s) not in (2, 4, 6):
+                raise ValueError()
+            # Normalize leap seconds (60) to 59
+            if (s.count(":") == 2 and s.endswith(":60")) or (
+                len(s) == 6 and s[4:] == "60"
+            ):
+                s = s[:-2] + "59"
+            return _time.fromisoformat(s)
+        raise ValueError()
+
+else:  # pragma: no cover
+
+    def _time_from_iso_nofrac(s: str) -> _time:
+        # Compensate for the fact that Python's isoformat
+        # doesn't support basic ISO 8601 formats
+        if len(s) == 4:
+            s = s[:2] + ":" + s[2:]
+        elif len(s) == 6:
+            # Normalize leap seconds (60) to 59 in basic format
+            if s.endswith("60"):
+                s = s[:4] + "59"
+            s = s[:2] + ":" + s[2:4] + ":" + s[4:]
+        elif s.count(":") == 2 and s.endswith(":60"):
+            # Normalize leap seconds (60) to 59 in extended format
+            s = s[:-2] + "59"
+        if all(map("0123456789:".__contains__, s)):
+            return _time.fromisoformat(s)
+        raise ValueError()
+
+
+_RFC2822_WEEKDAY_TO_ISO = {
+    "mon": 1,
+    "tue": 2,
+    "wed": 3,
+    "thu": 4,
+    "fri": 5,
+    "sat": 6,
+    "sun": 7,
+}
+
+
+_RFC2822_MONTH_NAMES = {
+    "jan": 1,
+    "feb": 2,
+    "mar": 3,
+    "apr": 4,
+    "may": 5,
+    "jun": 6,
+    "jul": 7,
+    "aug": 8,
+    "sep": 9,
+    "oct": 10,
+    "nov": 11,
+    "dec": 12,
+}
+
+WEEKDAY_TO_RFC2822 = [s.title() for s in _RFC2822_WEEKDAY_TO_ISO]
+MONTH_TO_RFC2822 = [s.title() for s in _RFC2822_MONTH_NAMES]
+MONTH_TO_RFC2822.insert(0, "")  # 1-indexed
+
+_RFC2822_ZONES = {
+    "EST": -5,
+    "EDT": -4,
+    "CST": -6,
+    "CDT": -5,
+    "MST": -7,
+    "MDT": -6,
+    "PST": -8,
+    "PDT": -7,
+    "UT": 0,
+    "GMT": 0,
+}
+
+
+def parse_rfc2822(s: str) -> _datetime:
+    # Technically, only tab, space and CRLF are allowed in RFC2822,
+    # but we allow any ASCII whitespace. str.split() also splits on the
+    # separators \x1c-\x1f, which aren't whitespace.
+    if not s.isascii() or any(c in s for c in "\x1c\x1d\x1e\x1f"):
+        _rfc2822_err(s)
+
+    # Parse the weekday
+    try:
+        first, second, *parts = s.split()
+        if first.isdigit():
+            iso_weekday = None
+            parts = [first, second, *parts]
+        else:
+            # Case: Mon, 23 Jan
+            if len(first) == 4 and first[3] == ",":
+                weekday_raw = first[:3]
+                parts = [second, *parts]
+            # Case: Mon , 23 Jan
+            elif len(first) == 3 and second == ",":
+                weekday_raw = first
+            # Case: Mon ,23 Jan
+            elif len(first) == 3 and second.startswith(","):
+                weekday_raw = first
+                parts = [second[1:], *parts]
+            # Case: Mon,23 Jan
+            elif len(first) > 4 and first[3] == ",":
+                weekday_raw = first[:3]
+                parts = [first[4:], second, *parts]
+            else:
+                _rfc2822_err(s)
+
+            iso_weekday = _RFC2822_WEEKDAY_TO_ISO[weekday_raw.lower()]
+    except (ValueError, KeyError):
+        _rfc2822_err(s)
+
+    # Parse the date
+    try:
+        day_raw, month_raw, year_raw, *parts = parts
+        if len(day_raw) > 2:
+            _rfc2822_err(s)
+        # NOTE: not int(), which also takes a sign, whitespace, and underscores
+        day, _ = parse_digits(day_raw, 0, len(day_raw))
+        month = _RFC2822_MONTH_NAMES[month_raw.lower()]
+        year, _ = parse_digits(year_raw, 0, len(year_raw))
+        if len(year_raw) == 2:
+            year += 2000 if year < 50 else 1900
+        elif len(year_raw) == 3:
+            year += 1900
+        elif len(year_raw) != 4:
+            _rfc2822_err(s)
+        date = _date(year, month, day)
+    except (ValueError, KeyError):
+        _rfc2822_err(s)
+
+    if iso_weekday and iso_weekday != date.isoweekday():
+        _rfc2822_err(s)
+
+    # Parse the time
+    try:
+        # time components may be separated by whitespace
+        *time_parts, offset_raw = parts
+        # ...but not within a number
+        if any(
+            a[-1].isdigit() and b[0].isdigit()
+            for a, b in zip(time_parts, time_parts[1:])
+        ):
+            _rfc2822_err(s)
+        time_raw = "".join(time_parts)
+        # Normalize leap seconds (60) to 59
+        hour, _ = parse_digits(time_raw, 0, 2)
+        minute, _ = parse_digits(time_raw, 3, 2)
+        if len(time_raw) == 5 and time_raw[2] == ":":
+            time = _time(hour, minute)
+        elif len(time_raw) == 8 and time_raw[2] == ":" and time_raw[5] == ":":
+            seconds, _ = parse_digits(time_raw, 6, 2)
+            if seconds == 60:
+                seconds = 59
+            time = _time(hour, minute, seconds)
+        else:
+            _rfc2822_err(s)
+    except ValueError:
+        _rfc2822_err(s)
+
+    # Parse the offset
+    try:
+        if offset_raw.startswith(("+", "-")) and len(offset_raw) == 5:
+            sign = 1 if offset_raw[0] == "+" else -1
+            offset_hours, _ = parse_digits(offset_raw, 1, 2)
+            offset_minutes, _ = parse_digits(offset_raw, 3, 2)
+            if offset_minutes > 59:
+                _rfc2822_err(s)
+            offset = (
+                _timedelta(hours=offset_hours, minutes=offset_minutes) * sign
+            )
+        elif offset_raw.isalpha():
+            # According to the spec, unknown time zones should
+            # just be treated at -0000 (UTC with unknown offset)
+            offset = _timedelta(
+                hours=_RFC2822_ZONES.get(offset_raw.upper(), 0)
+            )
+        else:
+            _rfc2822_err(s)
+        tzinfo = _timezone(offset)
+    except ValueError:
+        _rfc2822_err(s)
+
+    return check_utc_bounds(_datetime.combine(date, time, tzinfo=tzinfo))
+
+
+_MAX_TDELTA_DIGITS = 35  # consistent with Rust extension
+
+
+def parse_timedelta_component(
+    fullstr: str, exc: Exception
+) -> tuple[str, int, Literal["H", "M", "S"]]:
+    try:
+        split_index, unit = next(
+            (i, c) for i, c in enumerate(fullstr) if c in "HMS"
+        )
+    except StopIteration:
+        raise exc
+
+    raw, rest = fullstr[:split_index], fullstr[split_index + 1 :]
+
+    if unit == "S":
+        digits, sep, nanos_raw = _split_nextchar(raw, ".,")
+
+        if (
+            len(digits) > _MAX_TDELTA_DIGITS
+            or not digits.isdigit()
+            or len(nanos_raw) > 9
+            or (sep and not nanos_raw.isdigit())
+        ):
+            raise exc
+
+        value = int(digits) * 1_000_000_000 + int(nanos_raw.ljust(9, "0"))
+    else:
+        if len(raw) > _MAX_TDELTA_DIGITS or not raw.isdigit():
+            raise exc
+        value = int(raw)
+
+    return rest, value, cast(Literal["H", "M", "S"], unit)

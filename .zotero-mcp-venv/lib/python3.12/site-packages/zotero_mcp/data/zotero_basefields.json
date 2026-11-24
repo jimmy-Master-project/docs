@@ -1,0 +1,1398 @@
+{
+ "creatorTypes": {
+  "annotation": [],
+  "artwork": [
+   "artist",
+   "contributor"
+  ],
+  "attachment": [],
+  "audioRecording": [
+   "performer",
+   "originalCreator",
+   "composer",
+   "wordsBy",
+   "translator",
+   "contributor"
+  ],
+  "bill": [
+   "sponsor",
+   "cosponsor",
+   "contributor"
+  ],
+  "blogPost": [
+   "author",
+   "translator",
+   "commenter",
+   "contributor"
+  ],
+  "book": [
+   "author",
+   "contributor",
+   "editor",
+   "translator",
+   "seriesEditor"
+  ],
+  "bookSection": [
+   "author",
+   "contributor",
+   "editor",
+   "bookAuthor",
+   "translator",
+   "seriesEditor"
+  ],
+  "case": [
+   "author",
+   "counsel",
+   "contributor"
+  ],
+  "computerProgram": [
+   "programmer",
+   "contributor"
+  ],
+  "conferencePaper": [
+   "author",
+   "contributor",
+   "editor",
+   "translator",
+   "seriesEditor"
+  ],
+  "dataset": [
+   "author",
+   "contributor"
+  ],
+  "dictionaryEntry": [
+   "author",
+   "contributor",
+   "editor",
+   "translator",
+   "seriesEditor"
+  ],
+  "document": [
+   "author",
+   "contributor",
+   "editor",
+   "translator",
+   "reviewedAuthor"
+  ],
+  "email": [
+   "author",
+   "translator",
+   "contributor",
+   "recipient"
+  ],
+  "encyclopediaArticle": [
+   "author",
+   "contributor",
+   "editor",
+   "translator",
+   "seriesEditor"
+  ],
+  "film": [
+   "director",
+   "producer",
+   "scriptwriter",
+   "castMember",
+   "host",
+   "guest",
+   "narrator",
+   "translator",
+   "contributor"
+  ],
+  "forumPost": [
+   "author",
+   "contributor"
+  ],
+  "hearing": [
+   "contributor"
+  ],
+  "instantMessage": [
+   "author",
+   "contributor",
+   "recipient"
+  ],
+  "interview": [
+   "interviewee",
+   "contributor",
+   "interviewer",
+   "translator"
+  ],
+  "journalArticle": [
+   "author",
+   "contributor",
+   "editor",
+   "translator",
+   "reviewedAuthor"
+  ],
+  "letter": [
+   "author",
+   "recipient",
+   "contributor",
+   "translator"
+  ],
+  "magazineArticle": [
+   "author",
+   "contributor",
+   "translator",
+   "reviewedAuthor"
+  ],
+  "manuscript": [
+   "author",
+   "contributor",
+   "translator"
+  ],
+  "map": [
+   "cartographer",
+   "contributor",
+   "seriesEditor"
+  ],
+  "newspaperArticle": [
+   "author",
+   "contributor",
+   "translator",
+   "reviewedAuthor"
+  ],
+  "note": [],
+  "patent": [
+   "inventor",
+   "attorneyAgent",
+   "contributor"
+  ],
+  "podcast": [
+   "podcaster",
+   "guest",
+   "producer",
+   "executiveProducer",
+   "seriesCreator",
+   "director",
+   "scriptwriter",
+   "castMember",
+   "translator",
+   "contributor"
+  ],
+  "preprint": [
+   "author",
+   "contributor",
+   "editor",
+   "translator",
+   "reviewedAuthor"
+  ],
+  "presentation": [
+   "presenter",
+   "chair",
+   "organizer",
+   "contributor",
+   "translator"
+  ],
+  "radioBroadcast": [
+   "creator",
+   "host",
+   "guest",
+   "producer",
+   "executiveProducer",
+   "seriesCreator",
+   "director",
+   "scriptwriter",
+   "castMember",
+   "translator",
+   "contributor"
+  ],
+  "report": [
+   "author",
+   "editor",
+   "contributor",
+   "translator",
+   "seriesEditor"
+  ],
+  "standard": [
+   "author",
+   "editor",
+   "contributor"
+  ],
+  "statute": [
+   "author",
+   "contributor"
+  ],
+  "thesis": [
+   "author",
+   "contributor"
+  ],
+  "tvBroadcast": [
+   "director",
+   "producer",
+   "executiveProducer",
+   "seriesCreator",
+   "scriptwriter",
+   "castMember",
+   "host",
+   "guest",
+   "narrator",
+   "translator",
+   "contributor"
+  ],
+  "videoRecording": [
+   "creator",
+   "director",
+   "producer",
+   "scriptwriter",
+   "executiveProducer",
+   "castMember",
+   "host",
+   "guest",
+   "narrator",
+   "translator",
+   "contributor"
+  ],
+  "webpage": [
+   "author",
+   "contributor",
+   "translator"
+  ]
+ },
+ "csl": {
+  "fields": {
+   "date": {
+    "accessed": "accessDate",
+    "issued": "date",
+    "original-date": "originalDate",
+    "submitted": "filingDate"
+   },
+   "text": {
+    "DOI": [
+     "DOI"
+    ],
+    "ISBN": [
+     "ISBN"
+    ],
+    "ISSN": [
+     "ISSN"
+    ],
+    "PMCID": [
+     "PMCID"
+    ],
+    "PMID": [
+     "PMID"
+    ],
+    "URL": [
+     "url"
+    ],
+    "abstract": [
+     "abstractNote"
+    ],
+    "archive": [
+     "archive"
+    ],
+    "archive_location": [
+     "archiveLocation"
+    ],
+    "authority": [
+     "authority"
+    ],
+    "call-number": [
+     "callNumber",
+     "applicationNumber"
+    ],
+    "chapter-number": [
+     "session"
+    ],
+    "citation-key": [
+     "citationKey"
+    ],
+    "collection-number": [
+     "seriesNumber"
+    ],
+    "collection-title": [
+     "seriesTitle",
+     "series"
+    ],
+    "container-title": [
+     "publicationTitle",
+     "reporter",
+     "code"
+    ],
+    "dimensions": [
+     "artworkSize",
+     "runningTime"
+    ],
+    "edition": [
+     "edition"
+    ],
+    "event-place": [
+     "eventPlace"
+    ],
+    "event-title": [
+     "meetingName",
+     "conferenceName"
+    ],
+    "genre": [
+     "type",
+     "programmingLanguage"
+    ],
+    "issue": [
+     "issue",
+     "priorityNumbers"
+    ],
+    "journalAbbreviation": [
+     "journalAbbreviation"
+    ],
+    "language": [
+     "language"
+    ],
+    "license": [
+     "rights"
+    ],
+    "medium": [
+     "medium",
+     "system"
+    ],
+    "note": [
+     "extra"
+    ],
+    "number": [
+     "number"
+    ],
+    "number-of-pages": [
+     "numPages"
+    ],
+    "number-of-volumes": [
+     "numberOfVolumes"
+    ],
+    "original-publisher": [
+     "originalPublisher"
+    ],
+    "original-publisher-place": [
+     "originalPlace"
+    ],
+    "page": [
+     "pages"
+    ],
+    "part-number": [
+     "partNumber"
+    ],
+    "part-title": [
+     "partTitle"
+    ],
+    "publisher": [
+     "publisher"
+    ],
+    "publisher-place": [
+     "place"
+    ],
+    "references": [
+     "history",
+     "references"
+    ],
+    "scale": [
+     "scale"
+    ],
+    "section": [
+     "section",
+     "committee"
+    ],
+    "shortTitle": [
+     "shortTitle"
+    ],
+    "source": [
+     "libraryCatalog"
+    ],
+    "status": [
+     "status"
+    ],
+    "title": [
+     "title"
+    ],
+    "title-short": [
+     "shortTitle"
+    ],
+    "version": [
+     "versionNumber"
+    ],
+    "volume": [
+     "volume",
+     "codeNumber"
+    ]
+   }
+  },
+  "names": {
+   "author": "author",
+   "bookAuthor": "container-author",
+   "castMember": "performer",
+   "chair": "chair",
+   "composer": "composer",
+   "contributor": "contributor",
+   "creator": "author",
+   "director": "director",
+   "editor": "editor",
+   "executiveProducer": "executive-producer",
+   "guest": "guest",
+   "host": "host",
+   "interviewer": "interviewer",
+   "narrator": "narrator",
+   "organizer": "organizer",
+   "originalCreator": "original-author",
+   "podcaster": "host",
+   "producer": "producer",
+   "recipient": "recipient",
+   "reviewedAuthor": "reviewed-author",
+   "scriptwriter": "script-writer",
+   "seriesCreator": "series-creator",
+   "seriesEditor": "collection-editor",
+   "translator": "translator"
+  },
+  "types": {
+   "article": [
+    "preprint"
+   ],
+   "article-journal": [
+    "journalArticle"
+   ],
+   "article-magazine": [
+    "magazineArticle"
+   ],
+   "article-newspaper": [
+    "newspaperArticle"
+   ],
+   "bill": [
+    "bill"
+   ],
+   "book": [
+    "book"
+   ],
+   "broadcast": [
+    "podcast",
+    "tvBroadcast",
+    "radioBroadcast"
+   ],
+   "chapter": [
+    "bookSection"
+   ],
+   "dataset": [
+    "dataset"
+   ],
+   "document": [
+    "document",
+    "attachment",
+    "note"
+   ],
+   "entry-dictionary": [
+    "dictionaryEntry"
+   ],
+   "entry-encyclopedia": [
+    "encyclopediaArticle"
+   ],
+   "graphic": [
+    "artwork"
+   ],
+   "hearing": [
+    "hearing"
+   ],
+   "interview": [
+    "interview"
+   ],
+   "legal_case": [
+    "case"
+   ],
+   "legislation": [
+    "statute"
+   ],
+   "manuscript": [
+    "manuscript"
+   ],
+   "map": [
+    "map"
+   ],
+   "motion_picture": [
+    "film",
+    "videoRecording"
+   ],
+   "paper-conference": [
+    "conferencePaper"
+   ],
+   "patent": [
+    "patent"
+   ],
+   "personal_communication": [
+    "letter",
+    "email",
+    "instantMessage"
+   ],
+   "post": [
+    "forumPost"
+   ],
+   "post-weblog": [
+    "blogPost"
+   ],
+   "report": [
+    "report"
+   ],
+   "software": [
+    "computerProgram"
+   ],
+   "song": [
+    "audioRecording"
+   ],
+   "speech": [
+    "presentation"
+   ],
+   "standard": [
+    "standard"
+   ],
+   "thesis": [
+    "thesis"
+   ],
+   "webpage": [
+    "webpage"
+   ]
+  }
+ },
+ "itemTypes": {
+  "annotation": {},
+  "artwork": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "artworkMedium": "medium",
+   "artworkSize": "artworkSize",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "eventPlace": "eventPlace",
+   "extra": "extra",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "attachment": {
+   "accessDate": "accessDate",
+   "title": "title",
+   "url": "url"
+  },
+  "audioRecording": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "audioRecordingFormat": "medium",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "label": "publisher",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "numberOfVolumes": "numberOfVolumes",
+   "place": "place",
+   "rights": "rights",
+   "runningTime": "runningTime",
+   "seriesTitle": "seriesTitle",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "volume": "volume"
+  },
+  "bill": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "billNumber": "number",
+   "citationKey": "citationKey",
+   "code": "code",
+   "codePages": "pages",
+   "codeVolume": "volume",
+   "date": "date",
+   "extra": "extra",
+   "history": "history",
+   "language": "language",
+   "legislativeBody": "authority",
+   "rights": "rights",
+   "section": "section",
+   "session": "session",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "blogPost": {
+   "DOI": "DOI",
+   "ISSN": "ISSN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "blogTitle": "publicationTitle",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "language": "language",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "websiteType": "type"
+  },
+  "book": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "ISSN": "ISSN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "edition": "edition",
+   "extra": "extra",
+   "format": "medium",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "numPages": "numPages",
+   "numberOfVolumes": "numberOfVolumes",
+   "originalDate": "originalDate",
+   "originalPlace": "originalPlace",
+   "originalPublisher": "originalPublisher",
+   "place": "place",
+   "publisher": "publisher",
+   "rights": "rights",
+   "series": "series",
+   "seriesNumber": "seriesNumber",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "volume": "volume"
+  },
+  "bookSection": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "ISSN": "ISSN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "bookTitle": "publicationTitle",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "edition": "edition",
+   "extra": "extra",
+   "format": "medium",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "numberOfVolumes": "numberOfVolumes",
+   "originalDate": "originalDate",
+   "originalPlace": "originalPlace",
+   "originalPublisher": "originalPublisher",
+   "pages": "pages",
+   "place": "place",
+   "publisher": "publisher",
+   "rights": "rights",
+   "series": "series",
+   "seriesNumber": "seriesNumber",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "volume": "volume"
+  },
+  "case": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "caseName": "title",
+   "citationKey": "citationKey",
+   "court": "authority",
+   "dateDecided": "date",
+   "docketNumber": "number",
+   "extra": "extra",
+   "firstPage": "pages",
+   "history": "history",
+   "language": "language",
+   "reporter": "reporter",
+   "reporterVolume": "volume",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "url": "url"
+  },
+  "computerProgram": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "company": "publisher",
+   "date": "date",
+   "extra": "extra",
+   "libraryCatalog": "libraryCatalog",
+   "place": "place",
+   "programmingLanguage": "programmingLanguage",
+   "rights": "rights",
+   "seriesTitle": "seriesTitle",
+   "shortTitle": "shortTitle",
+   "system": "system",
+   "title": "title",
+   "url": "url",
+   "versionNumber": "versionNumber"
+  },
+  "conferencePaper": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "ISSN": "ISSN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "conferenceName": "conferenceName",
+   "date": "date",
+   "eventPlace": "eventPlace",
+   "extra": "extra",
+   "issue": "issue",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "numberOfVolumes": "numberOfVolumes",
+   "pages": "pages",
+   "place": "place",
+   "proceedingsTitle": "publicationTitle",
+   "publisher": "publisher",
+   "rights": "rights",
+   "series": "series",
+   "seriesNumber": "seriesNumber",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "volume": "volume"
+  },
+  "dataset": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "format": "medium",
+   "identifier": "number",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "repository": "publisher",
+   "repositoryLocation": "place",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "type": "type",
+   "url": "url",
+   "versionNumber": "versionNumber"
+  },
+  "dictionaryEntry": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "dictionaryTitle": "publicationTitle",
+   "edition": "edition",
+   "extra": "extra",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "numberOfVolumes": "numberOfVolumes",
+   "pages": "pages",
+   "place": "place",
+   "publisher": "publisher",
+   "rights": "rights",
+   "series": "series",
+   "seriesNumber": "seriesNumber",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "volume": "volume"
+  },
+  "document": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "place": "place",
+   "publisher": "publisher",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "type": "type",
+   "url": "url"
+  },
+  "email": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "language": "language",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "subject": "title",
+   "url": "url"
+  },
+  "encyclopediaArticle": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "edition": "edition",
+   "encyclopediaTitle": "publicationTitle",
+   "extra": "extra",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "numberOfVolumes": "numberOfVolumes",
+   "pages": "pages",
+   "place": "place",
+   "publisher": "publisher",
+   "rights": "rights",
+   "series": "series",
+   "seriesNumber": "seriesNumber",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "volume": "volume"
+  },
+  "film": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "distributor": "publisher",
+   "extra": "extra",
+   "genre": "type",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "place": "place",
+   "rights": "rights",
+   "runningTime": "runningTime",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "videoRecordingFormat": "medium"
+  },
+  "forumPost": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "forumTitle": "publicationTitle",
+   "language": "language",
+   "postType": "type",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "hearing": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "citationKey": "citationKey",
+   "committee": "committee",
+   "date": "date",
+   "documentNumber": "number",
+   "extra": "extra",
+   "history": "history",
+   "language": "language",
+   "legislativeBody": "authority",
+   "numberOfVolumes": "numberOfVolumes",
+   "pages": "pages",
+   "place": "place",
+   "publisher": "publisher",
+   "rights": "rights",
+   "session": "session",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "instantMessage": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "language": "language",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "interview": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "interviewMedium": "medium",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "place": "place",
+   "publisher": "publisher",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "journalArticle": {
+   "DOI": "DOI",
+   "ISSN": "ISSN",
+   "PMCID": "PMCID",
+   "PMID": "PMID",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "issue": "issue",
+   "journalAbbreviation": "journalAbbreviation",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "pages": "pages",
+   "partNumber": "partNumber",
+   "partTitle": "partTitle",
+   "place": "place",
+   "publicationTitle": "publicationTitle",
+   "publisher": "publisher",
+   "rights": "rights",
+   "section": "section",
+   "series": "series",
+   "seriesText": "seriesText",
+   "seriesTitle": "seriesTitle",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "volume": "volume"
+  },
+  "letter": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "eventPlace": "eventPlace",
+   "extra": "extra",
+   "language": "language",
+   "letterType": "type",
+   "libraryCatalog": "libraryCatalog",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "magazineArticle": {
+   "DOI": "DOI",
+   "ISSN": "ISSN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "issue": "issue",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "pages": "pages",
+   "place": "place",
+   "publicationTitle": "publicationTitle",
+   "publisher": "publisher",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "volume": "volume"
+  },
+  "manuscript": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "institution": "publisher",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "manuscriptType": "type",
+   "numPages": "numPages",
+   "number": "number",
+   "place": "place",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "map": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "edition": "edition",
+   "extra": "extra",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "mapType": "type",
+   "place": "place",
+   "publisher": "publisher",
+   "rights": "rights",
+   "scale": "scale",
+   "seriesTitle": "seriesTitle",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "newspaperArticle": {
+   "DOI": "DOI",
+   "ISSN": "ISSN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "edition": "edition",
+   "extra": "extra",
+   "issue": "issue",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "pages": "pages",
+   "place": "place",
+   "publicationTitle": "publicationTitle",
+   "publisher": "publisher",
+   "rights": "rights",
+   "section": "section",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "volume": "volume"
+  },
+  "note": {},
+  "patent": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "applicationNumber": "applicationNumber",
+   "assignee": "assignee",
+   "citationKey": "citationKey",
+   "country": "country",
+   "extra": "extra",
+   "filingDate": "filingDate",
+   "issueDate": "date",
+   "issuingAuthority": "authority",
+   "language": "language",
+   "legalStatus": "status",
+   "pages": "pages",
+   "patentNumber": "number",
+   "place": "place",
+   "priorityDate": "originalDate",
+   "priorityNumbers": "priorityNumbers",
+   "references": "references",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "podcast": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "audioFileType": "medium",
+   "citationKey": "citationKey",
+   "date": "date",
+   "episodeNumber": "number",
+   "extra": "extra",
+   "language": "language",
+   "place": "place",
+   "publisher": "publisher",
+   "rights": "rights",
+   "runningTime": "runningTime",
+   "seriesTitle": "seriesTitle",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "preprint": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveID": "number",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "genre": "type",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "place": "place",
+   "repository": "publisher",
+   "rights": "rights",
+   "series": "series",
+   "seriesNumber": "seriesNumber",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "presentation": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "language": "language",
+   "meetingName": "meetingName",
+   "place": "place",
+   "presentationType": "type",
+   "rights": "rights",
+   "series": "series",
+   "sessionTitle": "publicationTitle",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "radioBroadcast": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "audioRecordingFormat": "medium",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "episodeNumber": "number",
+   "extra": "extra",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "network": "publisher",
+   "place": "place",
+   "programTitle": "publicationTitle",
+   "rights": "rights",
+   "runningTime": "runningTime",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "report": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "ISSN": "ISSN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "institution": "publisher",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "pages": "pages",
+   "place": "place",
+   "reportNumber": "number",
+   "reportType": "type",
+   "rights": "rights",
+   "seriesNumber": "seriesNumber",
+   "seriesTitle": "seriesTitle",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url"
+  },
+  "standard": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "committee": "committee",
+   "date": "date",
+   "edition": "edition",
+   "extra": "extra",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "numPages": "numPages",
+   "number": "number",
+   "organization": "authority",
+   "partNumber": "partNumber",
+   "partTitle": "partTitle",
+   "place": "place",
+   "publisher": "publisher",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "status": "status",
+   "title": "title",
+   "type": "type",
+   "url": "url",
+   "versionNumber": "versionNumber"
+  },
+  "statute": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "citationKey": "citationKey",
+   "code": "code",
+   "codeNumber": "codeNumber",
+   "dateEnacted": "date",
+   "extra": "extra",
+   "history": "history",
+   "language": "language",
+   "nameOfAct": "title",
+   "pages": "pages",
+   "publicLawNumber": "number",
+   "rights": "rights",
+   "section": "section",
+   "session": "session",
+   "shortTitle": "shortTitle",
+   "url": "url"
+  },
+  "thesis": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "ISSN": "ISSN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "numPages": "numPages",
+   "place": "place",
+   "rights": "rights",
+   "series": "series",
+   "seriesNumber": "seriesNumber",
+   "shortTitle": "shortTitle",
+   "thesisType": "type",
+   "title": "title",
+   "university": "publisher",
+   "url": "url"
+  },
+  "tvBroadcast": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "episodeNumber": "number",
+   "extra": "extra",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "network": "publisher",
+   "place": "place",
+   "programTitle": "publicationTitle",
+   "rights": "rights",
+   "runningTime": "runningTime",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "videoRecordingFormat": "medium"
+  },
+  "videoRecording": {
+   "DOI": "DOI",
+   "ISBN": "ISBN",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "archive": "archive",
+   "archiveLocation": "archiveLocation",
+   "callNumber": "callNumber",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "language": "language",
+   "libraryCatalog": "libraryCatalog",
+   "numberOfVolumes": "numberOfVolumes",
+   "place": "place",
+   "rights": "rights",
+   "runningTime": "runningTime",
+   "seriesTitle": "seriesTitle",
+   "shortTitle": "shortTitle",
+   "studio": "publisher",
+   "title": "title",
+   "url": "url",
+   "videoRecordingFormat": "medium",
+   "volume": "volume"
+  },
+  "webpage": {
+   "DOI": "DOI",
+   "abstractNote": "abstractNote",
+   "accessDate": "accessDate",
+   "citationKey": "citationKey",
+   "date": "date",
+   "extra": "extra",
+   "language": "language",
+   "place": "place",
+   "publisher": "publisher",
+   "rights": "rights",
+   "shortTitle": "shortTitle",
+   "title": "title",
+   "url": "url",
+   "websiteTitle": "publicationTitle",
+   "websiteType": "type"
+  }
+ },
+ "version": 42
+}

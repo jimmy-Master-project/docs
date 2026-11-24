@@ -1,0 +1,10 @@
+#!/mnt/5be038a8-6538-4ad0-a911-de8b54d7325c/5_code/4_master/llm-bias-pipeline/docs/.zotero-mcp-venv/bin/python
+# -*- coding: utf-8 -*-
+import sys
+from uvicorn.main import main
+if __name__ == "__main__":
+    if sys.argv[0].endswith("-script.pyw"):
+        sys.argv[0] = sys.argv[0][:-11]
+    elif sys.argv[0].endswith(".exe"):
+        sys.argv[0] = sys.argv[0][:-4]
+    sys.exit(main())
