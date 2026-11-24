@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "servers": {
+      "zotero": {
+        "type": "local",
+        "command": ["/mnt/5be038a8-6538-4ad0-a911-de8b54d7325c/5_code/4_master/llm-bias-pipeline/docs/.zotero-mcp-venv/bin/zotero-mcp", "serve", "--transport", "stdio"],
+        "environment": {
+          "ZOTERO_LOCAL": "true"
+        }
+      }
+    }
+  }
+}
